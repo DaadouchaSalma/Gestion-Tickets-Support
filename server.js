@@ -12,3 +12,11 @@ app.get('/index',(req,res)=>{
     res.sendFile(__dirname+'/template/index.html')
 }
 )
+app.get('/create',(req,res)=>{
+    res.sendFile(__dirname+'/template/creation-ticket.html')
+}
+)
+app.get('/all',(req,res)=>{
+    res.sendFile(__dirname+'/template/liste-ticket-user.html')
+}
+)
