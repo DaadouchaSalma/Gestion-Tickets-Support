@@ -7,3 +7,8 @@ app.listen(4000, () => {
 app.get('/', (req, res) => {
     res.send('Hello from server!');
 });
+app.use(express.static('template'));
+app.get('/index',(req,res)=>{
+    res.sendFile(__dirname+'/template/index.html')
+}
+)
