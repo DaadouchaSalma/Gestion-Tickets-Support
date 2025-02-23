@@ -3,6 +3,8 @@ const app=express()
 require('dotenv').config()
 const PORT = process.env.PORT || 5000
 const mongoose = require('mongoose')
+const ticketRoutes = require("./routes/routeTicket");
+const UserRoutes = require("./routes/routeUser");
 
 mongoose.connect(process.env.MONGO_URI).then(()=>console.log('Connected to DataBase')).catch(err=>console.log(err))
 
