@@ -2,6 +2,7 @@ const express = require("express");
 const Ticket = require("../models/ticket");
 const router = express.Router();
 
+
 //Récupérer tous les tickets
 router.get("/tousTickets", async (req, res) => {
     try {
@@ -12,6 +13,7 @@ router.get("/tousTickets", async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la récupération des tickets." });
     }
 });
+
 // Récupérer les tickets "a traiter"
 router.get("/Atraiter", async (req, res) => {
     try {
@@ -21,6 +23,7 @@ router.get("/Atraiter", async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la récupération des tickets." });
     }
 });
+
 //Assigner un agent à un ticket
 router.put("/assign/:id", async (req, res) => {
     try {
@@ -65,5 +68,26 @@ router.put("/:ticketId", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
   });
+
+//Create ticket
+router.post("/add", async (req, res) => {
+    try {
+      const ticket = new Ticket(req.body);
+      await ticket.save();
+      res.status(201).json(ticket);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+//List ticket user
+router.get('/', async (req, res) => {
+    try {
+      const tickets = await Ticket.find({});
+      res.status(200).json(tickets);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+});
 
 module.exports = router;
