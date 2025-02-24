@@ -136,10 +136,18 @@
       <div class="main-panel" style="width: 100%;">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card" style="margin-left: 25%;">
+            <div class="col-lg-8 grid-margin stretch-card" style="margin-left: 16%;">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Liste des tickets</h4>
+                  <label for="statusFilter">Filtrer par statut :</label>
+                  <select id="statusFilter" class="btn btn-inverse-primary btn-fw btn-sm">
+                      <option value="Tous">Tous</option>
+                      <option value="En attente">En attente</option>
+                      <option value="En cours">En cours</option>
+                      <option value="Résolu">Résolu</option>
+                  </select>
+
                   <!--p class="card-description">
                     Add class <code>.table-hover</code>
                   </p-->
@@ -154,36 +162,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>Photoshop</td>
-                          <td class="text-danger"> 28.76% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-danger">Pending</label></td>
-                        </tr>
-                        <tr>
-                          <td>Messsy</td>
-                          <td>Flash</td>
-                          <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>John</td>
-                          <td>Premier</td>
-                          <td class="text-danger"> 35.00% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Peter</td>
-                          <td>After effects</td>
-                          <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-success">Completed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Dave</td>
-                          <td>53275535</td>
-                          <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
+                       
                       </tbody>
                     </table>
                   </div>
@@ -221,6 +200,54 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <!-- End custom js for this page-->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+ document.addEventListener("DOMContentLoaded", function() {
+    const tableBody = document.querySelector("tbody");
+    const statusFilter = document.getElementById("statusFilter");
+
+    function fetchAndDisplayTickets() {
+        axios.get("http://localhost:4000/tickets")
+            .then(response => {
+                const tickets = response.data;
+                const selectedStatus = statusFilter.value;
+
+                tableBody.innerHTML = ""; // Réinitialiser le tableau
+                
+                tickets.forEach(ticket => {
+                    if (selectedStatus === "Tous" || ticket.status === selectedStatus) {
+                        let badgeClass = "badge-secondary";
+                        if (ticket.status === "En attente") {
+                            badgeClass = "badge-warning";
+                        } else if (ticket.status === "En cours") {
+                            badgeClass = "badge-info";
+                        } else if (ticket.status === "Résolu") {
+                            badgeClass = "badge-success";
+                        }
+
+                        const row = `<tr>
+                            <td>${ticket.title}</td>
+                            <td>${ticket.description}</td>
+                            <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
+                            <td><label class="badge ${badgeClass}">${ticket.status}</label></td>
+                        </tr>`;
+                        tableBody.innerHTML += row;
+                    }
+                });
+            })
+            .catch(error => console.error("Erreur lors du chargement des tickets:", error));
+    }
+
+    // Charger les tickets au démarrage
+    fetchAndDisplayTickets();
+
+    // Appliquer le filtre lors d'un changement de statut
+    statusFilter.addEventListener("change", fetchAndDisplayTickets);
+});
+
+  </script>
+  
+    
 </body>
 
 </html>

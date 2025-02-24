@@ -4,9 +4,9 @@ const ticketSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String},
   category: { type: String, required: true },
-  status: { type: String, enum: ["open", "in progress", "closed"], default: "open" },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  agent: { type: mongoose.Schema.Types.ObjectId, ref: "Agent" },
+  status: { type: String, enum: ["En attente", "En cours", "Résolu"], default: "En attente" },
+  /*user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  agent: { type: mongoose.Schema.Types.ObjectId, ref: "Agent" },*/
   createdAt: { type: Date, default: Date.now },
 });
 

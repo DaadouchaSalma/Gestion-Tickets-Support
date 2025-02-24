@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
+  <!-- toast -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 </head>
 
 <body>
@@ -148,25 +151,25 @@
                   <!--p class="card-description">
                     Basic form layout
                   </p-->
-                  <form class="forms-sample">
+                  <form class="forms-sample" id="ticketForm">
                     <div class="form-group">
                       <label for="exampleInputUsername1">Titre du ticket</label>
-                      <input type="text" class="form-control" id="exampleInputUsername1" >
+                      <input type="text" class="form-control" id="titre" >
                     </div>
                     <div class="form-group">
                         <label for="exampleTextarea1">Description du problème</label>
-                        <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                        <textarea class="form-control" id="description" rows="4"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlSelect2">Catégorie</label>
-                        <select class="form-control" id="exampleFormControlSelect2">
+                        <select class="form-control" id="categorie">
                           <option value="Problèmes techniques">Problèmes techniques</option>
                           <option value="Demandes d'assistance">Demandes d'assistance</option>
                           <option value="Demandes d’amélioration">Demandes d’amélioration</option>
                           <option value="Autres">Autres</option>
                         </select>
                       </div>
-                    <div class="form-group">
+                    <!--div class="form-group">
                         <label>Pièce jointe</label>
                         <input type="file" name="img[]" class="file-upload-default">
                         <div class="input-group col-xs-12">
@@ -175,7 +178,7 @@
                             <button class="file-upload-browse btn btn-primary" type="button">Télécharger</button>
                           </span>
                         </div>
-                    </div>
+                    </div-->
                     <button type="submit" class="btn btn-primary mr-2">Créer</button>
                     <button class="btn btn-light">Annuler</button>
                   </form>
@@ -220,6 +223,55 @@
   <script src="../../js/typeahead.js"></script>
   <script src="../../js/select2.js"></script>
   <!-- End custom js for this page-->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- toast script-->
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  <script>
+    document.getElementById("ticketForm").addEventListener("submit", async function(event) {
+      event.preventDefault(); // Prevent page reload
+  
+      // Get form values
+      const title = document.getElementById("titre").value;
+      const description = document.getElementById("description").value;
+      const category = document.getElementById("categorie").value;
+  
+      try {
+        // Send POST request using Axios
+        const response = await axios.post("http://localhost:4000/tickets/add", {
+          title,
+          description,
+          category
+        });
+        // Show success toast
+        Toastify({
+              text: "Ticket créé avec succès !",
+              duration: 3000, // Duration in milliseconds
+              close: true, // Show close button
+              gravity: "top", // Position (top, bottom)
+              position: "right", // Position (left, right, center)
+              backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", // Custom background
+              stopOnFocus: true // Stop timer on hover
+            }).showToast();
+        console.log(response.data);
+  
+        // Reset form after submission
+        document.getElementById("ticketForm").reset();
+      } catch (error) {
+        console.error("Error creating ticket:", error);
+        // Show error toast
+      Toastify({
+        text: "Échec de la création du ticket. Veuillez réessayer.",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+        stopOnFocus: true
+      }).showToast();
+      }
+    });
+  </script>
 </body>
 
 </html>
