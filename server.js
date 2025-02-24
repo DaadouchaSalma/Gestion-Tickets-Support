@@ -1,10 +1,14 @@
+require('dotenv').config()
+require("./models/user");
+require("./models/ticket");
 const express = require('express')
 const app=express()
-require('dotenv').config()
 const PORT = process.env.PORT || 5000
 const mongoose = require('mongoose')
 const ticketRoutes = require("./routes/routeTicket");
 const UserRoutes = require("./routes/routeUser");
+const cors = require('cors');
+app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI).then(()=>console.log('Connected to DataBase')).catch(err=>console.log(err))
 
@@ -20,3 +24,9 @@ app.get('/index',(req,res)=>{
     res.sendFile(__dirname+'/template/index.html')
 }
 )
+
+app.get('/agentList/:agentId',(req,res)=>{
+    res.sendFile(__dirname+'/template/agent/ticketList.html')
+}
+)
+app.use("/tickets", ticketRoutes);
