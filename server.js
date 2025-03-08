@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000
 const mongoose = require('mongoose')
 const ticketRoutes = require("./routes/routeTicket");
 const UserRoutes = require("./routes/routeUser");
+const AuthRoutes= require("./routes/routeAuth")
 const cors = require('cors');
 app.use(cors());
 require("./models/user");
@@ -29,6 +30,12 @@ app.use(express.static('template'));
 app.get('/index',(req,res)=>{
     res.sendFile(__dirname+'/template/index.html')})
 
+app.get('/login',(req,res)=>{
+        res.sendFile(__dirname+'/template/auth/login.html')})
+
+app.get('/register',(req,res)=>{
+        res.sendFile(__dirname+'/template/auth/register.html')})
+
 app.get('/agentList/:agentId',(req,res)=>{
     res.sendFile(__dirname+'/template/agent/ticketList.html')})
 
@@ -46,3 +53,4 @@ app.get('/listTicketUser',(req,res)=>{
 
 app.use("/tickets", ticketRoutes);
 app.use('/users', UserRoutes);
+app.use('/auth', AuthRoutes);
