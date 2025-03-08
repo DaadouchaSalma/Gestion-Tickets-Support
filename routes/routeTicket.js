@@ -1,10 +1,11 @@
 const express = require("express");
 const Ticket = require("../models/ticket");
+const { authenticateUser, authorizeAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
 //Récupérer tous les tickets
-router.get("/tousTickets", async (req, res) => {
+router.get("/tousTickets",authenticateUser, authorizeAdmin, async (req, res) => {
     try {
         const tickets = await Ticket.find().populate("user", "email");
        

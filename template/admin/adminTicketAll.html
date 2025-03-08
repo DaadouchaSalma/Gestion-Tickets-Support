@@ -469,8 +469,16 @@
   <script>
    async function fetchData() {
       try {
+          const token = localStorage.getItem('token');
+
+          if (!token) {
+              alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+          }
           // Récupérer les tickets à traiter
-          const ticketsResponse = await axios.get('/tickets/tousTickets');
+          const ticketsResponse = await axios.get('/tickets/tousTickets', {
+            headers: {
+                Authorization: `Bearer ${token}`}});
           const tickets = ticketsResponse.data;
           // Remplir le tableau des tickets
           const ticketTableBody = document.getElementById('ticketTableBody');
