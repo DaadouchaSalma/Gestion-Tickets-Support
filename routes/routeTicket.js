@@ -2,7 +2,7 @@ const express = require("express");
 const Ticket = require("../models/ticket");
 const User = require("../models/user");
 const { envoyerNotification } = require("../services/notificationService")
-const { authenticateUser, authorizeAdmin,authorizeUser } = require("../middleware/authMiddleware");
+const { authenticateUser, authorizeAdmin, authorizeAgent, authorizeUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
@@ -44,24 +44,25 @@ router.put("/assign/:id",authenticateUser, authorizeAdmin, async (req, res) => {
 });
 
 //Liste des tickets d'un agent 
-router.get("/:agentId", async (req, res) => {
-    try {
-      const agentId = req.params.agentId;
-      const tickets = await Ticket.find({ agent: agentId }).populate('user', 'email').exec();
-      console.log(tickets);
+router.get("/liste", authenticateUser, authorizeAgent, async (req, res) => {
+  try {
+    const agentId = req.user._id;
+    console.log(agentId);
+    const tickets = await Ticket.find({ agent: agentId }).populate('user', 'email').exec();
+    console.log(tickets);
 
-      if (tickets.length === 0) {
-        return res.status(404).json({ message: "No tickets found for this agent." });
-      }
-      res.json(tickets);
-
-    } catch (error) {
-      res.json({ message: error.message });
+    if (tickets.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this agent." });
     }
-  });
+    res.json(tickets);
+
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+});
 
 //Update status tickets
-router.put("/:ticketId", async (req, res) => {
+router.put("/:ticketId",  authenticateUser, authorizeAgent, async (req, res) => {
   try {
     const ticket = await Ticket.findByIdAndUpdate(req.params.ticketId, { status: req.body.status }, { new: true });
     console.log(ticket);
@@ -70,7 +71,7 @@ router.put("/:ticketId", async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-  });
+});
 
 
 //Create ticket

@@ -407,7 +407,7 @@
       <div class="main-panel" style="width: 100%;">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card" style="margin-left: 0.15%;">
+            <div class="col-lg-11 grid-margin stretch-card" style="margin-left: 0.15%;">
               <div class="card" >
                 <div class="card-body">
                   <h4 class="card-title">Liste des tickets</h4>
@@ -469,10 +469,18 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const ticketsBody = document.getElementById('tickets-body');
-    
-      const pathSegments = window.location.pathname.split('/');
-      const agentId = pathSegments[pathSegments.length - 1];    
-      axios.get(`/tickets/${agentId}`)
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+          alert("Vous devez être connecté pour accéder aux tickets.");
+          return;
+      }
+
+      axios.get(`/tickets/liste`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then(response => {
           const tickets = response.data;
           console.log(tickets)
@@ -497,7 +505,7 @@
             <td>${ticket.title}</td>
             <td>${ticket.category}</td>
             <td>${ticket.description}</td>
-            <td>${ticket.user.email}</td>
+            <td>${ticket.user ? ticket.user.email : "Non attribué"}</td>
             <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
             <td>
               <div class="dropdown">
@@ -536,8 +544,18 @@
             const newStatus = this.dataset.status;
             const color = this.dataset.color;
             const button = document.getElementById(`statusDropdown-${ticketId}`);
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+            }
     
-            axios.put(`/tickets/${ticketId}`, { status: newStatus })
+            axios.put(`/tickets/${ticketId}`, { status: newStatus }, {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+            })
               .then(response => {
                 button.textContent = this.textContent;
                 button.className = `btn btn-${color} btn-sm dropdown-toggle`;

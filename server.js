@@ -38,7 +38,7 @@ app.get('/login',(req,res)=>{
 app.get('/register',(req,res)=>{
         res.sendFile(__dirname+'/template/auth/register.html')})
 
-app.get('/agentList/:agentId',(req,res)=>{
+app.get('/agent/list',(req,res)=>{
     res.sendFile(__dirname+'/template/agent/ticketList.html')})
 
 app.get('/adminTickets',(req,res)=>{
