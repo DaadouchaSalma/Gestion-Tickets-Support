@@ -8,10 +8,12 @@ const mongoose = require('mongoose')
 const ticketRoutes = require("./routes/routeTicket");
 const UserRoutes = require("./routes/routeUser");
 const AuthRoutes= require("./routes/routeAuth")
+const NotifRoutes=require("./routes/routeNotif")
 const cors = require('cors');
 app.use(cors());
 require("./models/user");
 require("./models/ticket");
+require("./models/notification")
 
 mongoose.connect(process.env.MONGO_URI).then(()=>console.log('Connected to DataBase')).catch(err=>console.log(err))
 
@@ -54,3 +56,4 @@ app.get('/listTicketUser',(req,res)=>{
 app.use("/tickets", ticketRoutes);
 app.use('/users', UserRoutes);
 app.use('/auth', AuthRoutes);
+app.use('/notif', NotifRoutes);

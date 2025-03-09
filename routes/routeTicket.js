@@ -1,6 +1,8 @@
 const express = require("express");
 const Ticket = require("../models/ticket");
-const { authenticateUser, authorizeAdmin, authorizeAgent } = require("../middleware/authMiddleware");
+const User = require("../models/user");
+const { envoyerNotification } = require("../services/notificationService")
+const { authenticateUser, authorizeAdmin, authorizeAgent, authorizeUser } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
@@ -16,7 +18,7 @@ router.get("/tousTickets",authenticateUser, authorizeAdmin, async (req, res) => 
 });
 
 // Récupérer les tickets "a traiter"
-router.get("/Atraiter", async (req, res) => {
+router.get("/Atraiter",authenticateUser, authorizeAdmin, async (req, res) => {
     try {
         const tickets = await Ticket.find({ status: "A traiter" }).populate("user", "email");
         res.status(200).json(tickets);
@@ -26,7 +28,7 @@ router.get("/Atraiter", async (req, res) => {
 });
 
 //Assigner un agent à un ticket
-router.put("/assign/:id", async (req, res) => {
+router.put("/assign/:id",authenticateUser, authorizeAdmin, async (req, res) => {
     try {
         const { agentId } = req.body; 
         const ticket = await Ticket.findByIdAndUpdate(req.params.id, { agent: agentId, status: "En attente" });
@@ -71,16 +73,24 @@ router.put("/:ticketId",  authenticateUser, authorizeAgent, async (req, res) => 
   }
 });
 
+
 //Create ticket
-router.post("/add", async (req, res) => {
-    try {
-      const ticket = new Ticket(req.body);
+router.post("/add", authenticateUser, authorizeUser, async (req, res) => {
+  try {
+      const ticket = new Ticket({...req.body, user: req.user._id});
       await ticket.save();
+      const admins = await User.find({ role: "admin" });
+      console.log("les admins",admins);
+        if (admins.length > 0) {
+            for (let admin of admins) {
+                await envoyerNotification(admin._id, ticket._id, "📌 Un nouveau ticket a été créé et doit être attribué à un agent.");
+            }
+        }
       res.status(201).json(ticket);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
+  } catch (error) {
+      res.status(400).json({ message: "not found" });
+  }
+});
 
 //List ticket user
 router.get('/', async (req, res) => {
