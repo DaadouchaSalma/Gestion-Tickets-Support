@@ -459,8 +459,16 @@
   // Fonction pour récupérer les tickets et les agents
   async function fetchData() {
       try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          alert("Vous devez être connecté pour accéder aux tickets.");
+          return;
+        }
           // Récupérer les tickets à traiter
-          const ticketsResponse = await axios.get('/tickets/Atraiter');
+          const ticketsResponse = await axios.get('/tickets/Atraiter',{
+            headers: {
+                Authorization: `Bearer ${token}`}});
           const tickets = ticketsResponse.data;
 
           // Récupérer les agents
@@ -472,12 +480,13 @@
           ticketTableBody.innerHTML = ''; 
 
           tickets.forEach(ticket => {
+              const userEmail = ticket.user ? ticket.user.email : "Non attribué";
               const row = document.createElement('tr');
               row.innerHTML = `
                   <td>${ticket.title}</td>
                   <td>${ticket.category}</td>
                   <td>${ticket.description}</td>
-                  <td>${ticket.user.email}</td>
+                  <td>${userEmail}</td>
                   <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
                  <td>
                   
@@ -500,19 +509,27 @@
 
   // assigner un ticket à un agent
   async function assignTicket(ticketId) {
+    const token = localStorage.getItem('token');
+
+        if (!token) {
+          alert("Vous devez être connecté pour accéder aux tickets.");
+          return;
+        }
       const agentId = document.getElementById(`agentSelect-${ticketId}`).value;
       try {
-          const response = await axios.put(`/tickets/assign/${ticketId}`, { agentId });
+          const response = await axios.put(`/tickets/assign/${ticketId}`, { agentId },{
+            headers: {
+                Authorization: `Bearer ${token}`}});
           Toastify({
               text: "Ticket assigné avec succès !",
-              duration: 3000, // Duration in milliseconds
-              close: true, // Show close button
-              gravity: "top", // Position (top, bottom)
-              position: "right", // Position (left, right, center)
-              backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", // Custom background
-              stopOnFocus: true // Stop timer on hover
+              duration: 3000, 
+              close: true, 
+              gravity: "top",
+              position: "right", 
+              backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", 
+              stopOnFocus: true 
             }).showToast();
-          fetchData(); // Recharger les données après l'attribution
+          fetchData(); 
       } catch (error) {
           console.error("Erreur lors de l'attribution du ticket:", error);
       }
