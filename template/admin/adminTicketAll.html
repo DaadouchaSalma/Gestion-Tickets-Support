@@ -51,51 +51,16 @@
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <span class="count" id="notificationCount"></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="ti-info-alt mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
+              <div id="notificationList">
+                  <p class="text-muted small-text text-center">Aucune notification</p>
+              </div>
+          </div>
           </li>
+          
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="../images/faces/face28.jpg" alt="profile"/>
@@ -511,6 +476,87 @@
                   
   window.onload = fetchData;
      
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const notificationDropdown = document.getElementById("notificationDropdown");
+    const notificationList = document.getElementById("notificationList");
+    const notificationCount = document.getElementById("notificationCount");
+
+    async function fetchNotifications() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+            }
+
+            const response = await axios.get("/notif/unread", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const notifications = response.data;
+
+            if (notifications.length > 0) {
+                notificationCount.textContent = notifications.length;
+                notificationCount.style.display = "inline"; // Afficher le badge
+
+                notificationList.innerHTML = ""; // Vider la liste avant d'ajouter les nouvelles notifications
+
+                notifications.forEach(notification => {
+                    const notificationItem = document.createElement("a");
+                    notificationItem.classList.add("dropdown-item", "preview-item");
+                    notificationItem.innerHTML = `
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-warning">
+                                <i class="ti-info-alt mx-0"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">
+                                ${new Date(notification.createdAt).toLocaleString()}
+                            </p>
+                        </div>
+                    `;
+
+                    // Ajouter un écouteur de clic pour marquer cette notification comme lue
+                    notificationItem.addEventListener("click", async () => {
+                        try {
+                            const token = localStorage.getItem('token');
+                            if (!token) {
+                                alert("Vous devez être connecté pour accéder aux tickets.");
+                                return;
+                            }
+
+                            await axios.put("/notif/markAsRead", {}, {
+                                headers: { Authorization: `Bearer ${token}` }
+                            });
+
+                            fetchNotifications(); // Recharger après avoir marqué comme lue
+                        } catch (error) {
+                            console.error("Erreur lors de la mise à jour des notifications :", error);
+                        }
+                    });
+
+                    notificationList.appendChild(notificationItem);
+                });
+            } else {
+                notificationCount.style.display = "none"; // Masquer le badge s'il n'y a pas de notifications
+                notificationList.innerHTML = `<p class="text-muted small-text text-center">Aucune notification</p>`;
+            }
+        } catch (error) {
+            console.error("Erreur lors du chargement des notifications :", error);
+        }
+    }
+
+    // Charger les notifications au chargement de la page
+    fetchNotifications();
+
+    // Mettre à jour les notifications toutes les 30 secondes
+    setInterval(fetchNotifications, 30000);
+});
+
+
     </script>
 </body>
 
