@@ -1,6 +1,7 @@
 const express = require("express");
 const Notification = require("../models/notification");
 const { authenticateUser,authorizeAdmin } = require("../middleware/authMiddleware");
+const { route } = require("./routeUser");
 
 const router = express.Router();
 
@@ -21,5 +22,15 @@ router.put("/markAsRead", authenticateUser,authorizeAdmin, async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la mise à jour des notifications" });
     }
 });
+router.get("/nbNotif", async (req, res) => {
+    try {
+
+      const unreadCount = await Notification.countDocuments({  read: false });
+      res.json({ unreadCount });
+    } catch (error) {
+      console.error("Error fetching unread notifications:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
 
 module.exports = router;

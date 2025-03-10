@@ -1,1 +1,679 @@
-<img src="../../images/ticketyx.png" alt="logo">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Skydash Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="vendors/feather/feather.css">
+  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+  <!-- End plugin css for this pageeee -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="images/favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <!--a class="navbar-brand brand-logo mr-5" href="../../index.html"><img src="../../images/logo.svg" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a-->
+        <a class="navbar-brand brand-logo mr-5" href="/index"><img src="../images/ticketyx.png" class="mr-12" alt="logo" style="height: 30%; width: 80%;"/></a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="icon-menu"></span>
+        </button>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+              <i class="icon-bell mx-0"></i>
+              <span class="count" id="notificationCount"></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              <div id="notificationList">
+                  <p class="text-muted small-text text-center">Aucune notification</p>
+              </div>
+          </div>
+          </li>
+          
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <i class="ti-user mx-0" style="font-size: large; font-weight: bolder; line-height: 1;"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" onclick="logout()">
+                <i class="ti-power-off text-primary"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="icon-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_settings-panel.html -->
+      <div class="theme-setting-wrapper">
+        <div id="settings-trigger"><i class="ti-settings"></i></div>
+        <div id="theme-settings" class="settings-panel">
+          <i class="settings-close ti-close"></i>
+          <p class="settings-heading">SIDEBAR SKINS</p>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
+          <p class="settings-heading mt-2">HEADER SKINS</p>
+          <div class="color-tiles mx-0 px-4">
+            <div class="tiles success"></div>
+            <div class="tiles warning"></div>
+            <div class="tiles danger"></div>
+            <div class="tiles info"></div>
+            <div class="tiles dark"></div>
+            <div class="tiles default"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- partial -->
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/index">
+              <i class="mdi mdi-view-dashboard menu-icon"></i>
+              <span class="menu-title">Tableau de bord</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <i class="mdi mdi-ticket menu-icon"></i>
+              <span class="menu-title">Gestion des Tickets</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="/adminTickets">Tous les Tickets</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/adminTicketsNonAtt">Attribution Tickets</a></li>               
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/adminAddAgent">
+              <i class="mdi mdi-account-plus menu-icon"></i>
+              <span class="menu-title">Ajouter Un Agent</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                  <h3 class="font-weight-bold">Bienvenue sur le Dashboard</h3>
+                  <h6 class="font-weight-normal mb-0"> Vous avez <span id="unread-count" class="text-primary">0</span> notifications non lues!</h6>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            
+            <div class="col-md-12 grid-margin transparent">
+              <div class="row">
+                <!-- Carte 1 : Tickets en Attente d'Attribution -->
+                <div class="col-md-6 mb-5 stretch-card transparent">
+                  <div class="card card-tale">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center" style="display: flex; align-items: center; gap: 5px;">
+                        <p class="mb-4" style="font-size: large; color: #fff;"><b>Tickets en Attente d'Attribution</b></p>
+                        
+                      </div>
+                      <p class="fs-30 mb-2" id="ticketsEnAttente">0</p>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Carte 2 : Tickets en Cours de Traitement -->
+                <div class="col-md-6 mb-5 stretch-card transparent">
+                  <div class="card card-dark-blue">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center" style="display: flex; align-items: center; gap: 5px;">
+                       
+                        <p class="mb-4" style="font-size: large; color: #fff;"><b>Tickets en Cours</b></p>
+                      </div>
+                      <p class="fs-30 mb-2" id="ticketsEnCours">0</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <!-- Carte 3 : Nombre d'Agents -->
+                <div class="col-md-6 mb-5 stretch-card transparent">
+                  <div class="card card-light-blue">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center" style="display: flex; align-items: center; gap: 5px;">
+                        
+                        <p class="mb-4" style="font-size: large; color: #fff;"><b>Nombre d'Agents</b></p>
+                      </div>
+                      <p class="fs-30 mb-2" id="nbAgents">0</p>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Carte 4 : Nombre d'Utilisateurs -->
+                <div class="col-md-6 mb-5 stretch-card transparent">
+                  <div class="card card-light-danger">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center" style="display: flex; align-items: center; gap: 5px;">
+                        <p class="mb-4" style="font-size: large; color: #fff; margin: 0;"> <b>Nombre d'Utilisateurs</b> </p>
+                       
+                      </div>
+                      
+                      <p class="fs-30 mb-2" id="nbUsers">0</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+          <div class="row">
+            <div class="col-md-6 grid-margin stretch-card ">
+              <div class="card">
+                  <div class="card-body">
+                      <p class="card-title">Répartition des Tickets par État</p>
+                      <p class="font-weight-500">Nombre total de tickets selon leur état</p>
+                      <canvas id="south-america-chartt"></canvas>
+                      <div id="south-america-legend"></div>
+                  </div>
+              </div>
+          </div>
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                          <p class="card-title">Statistiques des Agents</p>
+                      </div>
+                      <p class="font-weight-500">Nombre total de tickets attribués et résolus par agent</p>
+                      <div id="sales-legend" class="chartjs-legend mt-4 mb-2">
+                          <canvas id="ticket-chart"></canvas>
+                      </div>
+                  </div>
+              </div>
+          </div>
+            
+          </div>
+          
+         
+          
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title">Liste Des Agents</p>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="table-responsive">
+                        <table id="example" class="display expandable-table" style="width:100%">
+                          <thead>
+                            <tr>
+                              <th>Nom</th>
+                              <th>Prénom</th>
+                              <th>Email</th>
+                              <th>Ticket attribué</th>
+                            </tr>
+                          </thead>
+                          <tbody id="agents-body"></tbody>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                
+              </div>
+            </div>
+     
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+          </div>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+          </div>
+        </footer> 
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>   
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="vendors/chart.js/Chart.min.js"></script>
+  <!--script src="vendors/datatables.net/jquery.dataTables.js"></script-->
+  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="js/dataTables.select.min.js"></script>
+
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="js/off-canvas.js"></script>
+  <script src="js/hoverable-collapse.js"></script>
+  <script src="js/template.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="js/dashboard.js"></script>
+  <script src="js/Chart.roundedBarCharts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- End custom js for this page-->
+
+  <script>
+    async function fetchData() {
+      try {
+        
+        const response1 = await axios.get('/tickets/ticketsAtraiter');
+        document.getElementById('ticketsEnAttente').textContent = response1.data.ticketsEnAttente;
+    
+       
+        const response2 = await axios.get('/tickets/tickets-en-cours');
+        document.getElementById('ticketsEnCours').textContent = response2.data.ticketsEnCours;
+    
+        
+        const response3 = await axios.get('/users/nb-agents');
+        document.getElementById('nbAgents').textContent = response3.data.nbAgents;
+    
+       
+        const response4 = await axios.get('/users/nb-users');
+        document.getElementById('nbUsers').textContent = response4.data.nbUsers;
+    
+      } catch (err) {
+        console.error("Erreur lors du chargement des données", err);
+      }
+    }
+    
+   
+    fetchData();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      async function fetchStats() {
+        const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+            }
+
+          try {
+            
+              const response = await fetch("/users/agentsTickets",{
+            headers: {
+                Authorization: `Bearer ${token}`}});
+              const data = await response.json();
+
+              const agentNames = data.map(item => item.nom);
+              const totalTickets = data.map(item => item.totalTickets);
+              const resolvedTickets = data.map(item => item.resolvedTickets);
+
+              const ctx = document.getElementById("ticket-chart").getContext("2d");
+              new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: agentNames,
+                    datasets: [
+                        {
+                            label: "Total Tickets",
+                            data: totalTickets,
+                            backgroundColor: "rgb(152, 189, 255)", // Bleu clair
+                            borderRadius: 10, // Arrondi des barres
+                            barThickness: 35 // Épaisseur des barres
+                        },
+                        {
+                            label: "Tickets Résolus",
+                            data: resolvedTickets,
+                            backgroundColor: "rgb(75, 73, 172)", // Bleu foncé
+                            borderRadius: 10, // Arrondi des barres
+                            barThickness: 35 // Épaisseur des barres
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Permet de définir une hauteur personnalisée
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+              });
+          } catch (error) {
+              console.error("Erreur lors de la récupération des statistiques:", error);
+          }
+      }
+
+      fetchStats();
+  </script>
+ <script>
+  async function fetchTicketStatus() {
+      try {
+          const response = await axios.get("/tickets/status"); 
+          const data = response.data;
+
+          const labels = data.map(item => item._id);
+          const values = data.map(item => item.count);
+
+          const ctx = document.getElementById("south-america-chartt").getContext("2d");
+          new Chart(ctx, {
+              type: "doughnut",
+              data: {
+                  labels: labels,
+                  datasets: [{
+                      data: values,
+                      backgroundColor: [
+                          "rgb(152, 189, 255)", // Bleu clair
+                          "rgb(75, 73, 172)", // Bleu foncé
+                          "#f47c7c", // Rouge clair
+                          "#7d90f3" // Bleu lavande
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false, 
+                  plugins: {
+                      legend: {
+                          position: "bottom",
+                          labels: {
+                              font: {
+                                  size: 14
+                              }
+                          }
+                      }
+                  }
+              }
+          });
+      } catch (error) {
+          console.error("Erreur lors de la récupération des données:", error);
+      }
+  }
+
+  fetchTicketStatus();
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const agentsBody = document.getElementById('agents-body');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert("Vous devez être connecté pour accéder à la liste des agents.");
+        return;
+    }
+
+    axios.get("/users/tousAgents", {
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
+      })
+      .then(response => {
+        const agents = response.data;
+        console.log(agents)
+      if (!Array.isArray(agents)) {
+        throw new Error("Invalid response format");
+      }
+
+        if(response.data.length === 0) {
+          agentsBody.innerHTML = `<tr><td colspan="6" class="text-center">Base de donnee vide</td></tr>`;
+          return;
+        }
+        populateTable(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching agents:', error);
+      });
+  
+    function populateTable(agents) {
+      agentsBody.innerHTML = agents.map(agent => `
+        <tr>
+          <td>${agent.nom}</td>
+          <td>${agent.prenom}</td>
+          <td>${agent.email}</td>
+          <td>${agent.totalTickets}</td>
+        </tr>
+      `).join('');
+    }
+  });
+  </script>
+  <script>
+   
+async function fetchUnreadNotifications() {
+ 
+
+  try {
+    const response = await axios.get("/notif/nbNotif");
+    document.getElementById('unread-count').textContent = response.data.unreadCount;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des notifications non lues :', error);
+  }
+}
+window.onload = fetchUnreadNotifications;
+
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const notificationDropdown = document.getElementById("notificationDropdown");
+  const notificationList = document.getElementById("notificationList");
+  const notificationCount = document.getElementById("notificationCount");
+
+  async function fetchNotifications() {
+      try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+              alert("Vous devez être connecté pour accéder aux tickets.");
+              return;
+          }
+
+          const response = await axios.get("/notif/unread", {
+              headers: { Authorization: `Bearer ${token}` }
+          });
+          const notifications = response.data;
+
+          if (notifications.length > 0) {
+              notificationCount.textContent = notifications.length;
+              notificationCount.style.display = "inline"; 
+
+              notificationList.innerHTML = ""; 
+
+              notifications.forEach(notification => {
+                const notificationItem = document.createElement("a");
+                    notificationItem.classList.add("dropdown-item", "preview-item");
+                    notificationItem.innerHTML = `
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-warning">
+                                <i class="ti-info-alt mx-0"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal text-wrap" style="white-space: normal; word-wrap: break-word;">
+                                ${notification.message}
+                            </h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">
+                                ${new Date(notification.createdAt).toLocaleString()}
+                            </p>
+                        </div>
+                    `;
+
+
+                  // Ajouter un écouteur de clic pour marquer cette notification comme lue
+                  notificationItem.addEventListener("click", async () => {
+                      try {
+                          const token = localStorage.getItem('token');
+                          if (!token) {
+                              alert("Vous devez être connecté pour accéder aux tickets.");
+                              return;
+                          }
+
+                          await axios.put("/notif/markAsRead", {}, {
+                              headers: { Authorization: `Bearer ${token}` }
+                          });
+
+                          fetchNotifications(); // Recharger après avoir marqué comme lue
+                      } catch (error) {
+                          console.error("Erreur lors de la mise à jour des notifications :", error);
+                      }
+                  });
+
+                  notificationList.appendChild(notificationItem);
+              });
+          } else {
+              notificationCount.style.display = "none"; // Masquer le badge s'il n'y a pas de notifications
+              notificationList.innerHTML = `<p class="text-muted small-text text-center">Aucune notification</p>`;
+          }
+      } catch (error) {
+          console.error("Erreur lors du chargement des notifications :", error);
+      }
+  }
+
+  // Charger les notifications au chargement de la page
+  fetchNotifications();
+
+  // Mettre à jour les notifications toutes les 30 secondes
+  setInterval(fetchNotifications, 30000);
+});
+
+
+  </script>
+  <script>
+    function logout() {
+      localStorage.removeItem('token');
+      fetch('http://localhost:4000/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+        setTimeout(() => {
+          window.location.href = '/login';  
+        }, 100);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la déconnexion:', error);
+      });
+    }
+  </script>
+  <style>
+    #ticket-chart {
+        height: 400px !important; /* Augmenter la hauteur */
+    }
+   
+    #south-america-chartt {
+        height: 400px !important; /* Même hauteur que le précédent */
+    }
+   
+  .dropdown-menu {
+    width: 350px; /* Largeur ajustée */
+    max-width: 350px;
+    padding: 10px; /* Espacement interne */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Ombre pour lisibilité */
+}
+
+.preview-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff;
+    transition: background 0.3s ease-in-out;
+}
+
+.preview-item:hover {
+    background: #f8f9fa;
+}
+
+.preview-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffcc00; /* Jaune plus visible */
+    margin-right: 10px;
+}
+
+.preview-icon {
+    font-size: 18px;
+    color: #fff;
+}
+
+.preview-item-content {
+    max-width: 240px; /* Évite que le texte dépasse */
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.5; /* Meilleur espacement des lignes */
+}
+
+.preview-subject {
+    font-weight: bold;
+    color: #333; /* Texte plus sombre */
+    font-size: 14px;
+}
+
+.small-text {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+}
+
+
+</style>
+</body>
+
+</html>
+
+
+
+

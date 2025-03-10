@@ -32,7 +32,8 @@ router.post('/login',async(req,res)=>{
     } catch(error){
         res.status(400).send({message:error.message})
     }
-})
+
+});
 
 router.post('/logout', (req, res) => {
     return res.status(200).json({ message: 'Déconnexion réussie' });
