@@ -3,6 +3,7 @@ const Ticket = require("../models/ticket");
 const User = require("../models/user");
 const { envoyerNotification } = require("../services/notificationService")
 const { authenticateUser, authorizeAdmin, authorizeAgent, authorizeUser } = require("../middleware/authMiddleware");
+const { sendStatusUpdateEmail } = require("../services/emailService");
 const router = express.Router();
 
 
@@ -64,9 +65,14 @@ router.get("/liste", authenticateUser, authorizeAgent, async (req, res) => {
 //Update status tickets
 router.put("/:ticketId",  authenticateUser, authorizeAgent, async (req, res) => {
   try {
-    const ticket = await Ticket.findByIdAndUpdate(req.params.ticketId, { status: req.body.status }, { new: true });
+    const ticket = await Ticket.findByIdAndUpdate(req.params.ticketId, { status: req.body.status }, { new: true }).populate('user');;
     console.log(ticket);
     res.json(ticket);
+    console.log('Ticket:', ticket);
+    console.log('Ticket User:', ticket.user);
+    console.log('User Email:', ticket.user?.email);
+
+    sendStatusUpdateEmail(ticket.user.email, ticket.title, req.body.status);
 
   } catch (error) {
     res.status(400).json({ message: error.message });
