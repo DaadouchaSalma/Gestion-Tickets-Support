@@ -18,27 +18,9 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
   <!-- toast -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<style>
-  
-  .agent-select {
-    width: 100%;
-     height:20%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ced4da; 
-    background-color: #f8f9fa; 
-    font-size: 14px; 
-    transition: border-color 0.3s; 
-}
-
-.agent-select:focus {
-    border-color: #007bff; 
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
-
-</style>
 
 <body>
   <div class="container-scroller">
@@ -68,54 +50,19 @@
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <span class="count" id="notificationCount"></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="ti-info-alt mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
+              <div id="notificationList">
+                  <p class="text-muted small-text text-center">Aucune notification</p>
+              </div>
+          </div>
           </li>
+          
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="../images/faces/face28.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -259,7 +206,7 @@
             </div>
             <ul class="chat-list">
               <li class="list active">
-                <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="../images/faces/face1.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Thomas Douglas</p>
                   <p>Available</p>
@@ -267,7 +214,7 @@
                 <small class="text-muted my-auto">19 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile"><img src="../images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
                 <div class="info">
                   <div class="wrapper d-flex">
                     <p>Catherine</p>
@@ -278,7 +225,7 @@
                 <small class="text-muted my-auto">23 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face3.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="../images/faces/face3.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Daniel Russell</p>
                   <p>Available</p>
@@ -286,7 +233,7 @@
                 <small class="text-muted my-auto">14 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile"><img src="../images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
                 <div class="info">
                   <p>James Richardson</p>
                   <p>Away</p>
@@ -294,7 +241,7 @@
                 <small class="text-muted my-auto">2 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face5.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="../images/faces/face5.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Madeline Kennedy</p>
                   <p>Available</p>
@@ -302,7 +249,7 @@
                 <small class="text-muted my-auto">5 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face6.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile"><img src="../images/faces/face6.jpg" alt="image"><span class="online"></span></div>
                 <div class="info">
                   <p>Sarah Graves</p>
                   <p>Available</p>
@@ -421,123 +368,35 @@
         </ul>
       </nav>
       <!-- partial -->
-<div class="main-panel" style="width: 100%;">
-  <div class="content-wrapper">
-      <div class="row">
-          <div class="col-lg-10 grid-margin stretch-card" style="margin-left: 0%;">
-              <div class="card" style="width: 1500px;">
-                  <div class="card-body">
-                      <h4 class="card-title">Liste des tickets Non Attribués</h4>
-                      <div class="table-responsive">
-                          <table class="table table-hover ">
-                              <thead>
-                                  <tr>
-                                      <th>Titre</th>
-                                      <th>Categorie</th>
-                                      <th>Description</th>
-                                      <th>Utilisateur</th>
-                                      <th>Date de Création</th>
-                                      <th>Attribuer à</th>
-                                      <th>Action</th>
-                                  </tr>
-                              </thead>
-                              <tbody id="ticketTableBody">
-                                 
-                              </tbody>
-                          </table>
+      <div class="main-panel" style="width: 100%;">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card" style="margin-left: 0.15%;">
+              <div class="card" >
+                <div class="card-body">
+                  <h4 class="card-title">Liste des tickets</h4>
+                  <form id="registerForm" class="pt-3" >
+                    <div class="form-group">
+                      <input type="text" class="form-control form-control-lg" id="nom" placeholder="Nom">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" id="prenom" placeholder="Prénom">
                       </div>
-                  </div>
+                    <div class="form-group">
+                      <input type="email" class="form-control form-control-lg" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control form-control-lg" id="password" placeholder="Mot de Passe">
+                    </div>
+                    <div class="mt-6">
+                      <button class="btn btn-block btn-primary  btn-lg font-weight-medium auth-form-btn" type="submit" style="width: 40%;">S'inscrire</button>
+                    </div>
+                  </form>
+                </div>
               </div>
+            </div>
           </div>
-      </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-  // Fonction pour récupérer les tickets et les agents
-  async function fetchData() {
-      try {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-          alert("Vous devez être connecté pour accéder aux tickets.");
-          return;
-        }
-          // Récupérer les tickets à traiter
-          const ticketsResponse = await axios.get('/tickets/Atraiter',{
-            headers: {
-                Authorization: `Bearer ${token}`}});
-          const tickets = ticketsResponse.data;
-
-          // Récupérer les agents
-          const agentsResponse = await axios.get('/users/agents');
-          const agents = agentsResponse.data;
-
-          // Remplir le tableau des tickets
-          const ticketTableBody = document.getElementById('ticketTableBody');
-          ticketTableBody.innerHTML = ''; 
-
-          tickets.forEach(ticket => {
-              const userEmail = ticket.user ? ticket.user.email : "Non attribué";
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                  <td>${ticket.title}</td>
-                  <td>${ticket.category}</td>
-                  <td>${ticket.description}</td>
-                  <td>${userEmail}</td>
-                  <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
-                 <td>
-                  
-            <select  id="agentSelect-${ticket._id}" class="form-control agent-select">
-              ${agents.map(agent => `<option value="${agent._id}">${agent.nom} ${agent.prenom}</option>`).join('')}
-            </select>
-         
-            </td>
-            <td>
-            <button class="btn btn-primary btn-sm mt-2" onclick="assignTicket('${ticket._id}')">Attribuer</button>
-                </td>
-
-              `;
-              ticketTableBody.appendChild(row);
-          });
-      } catch (error) {
-          console.error("Erreur lors de la récupération des données:", error);
-      }
-  }
-
-  // assigner un ticket à un agent
-  async function assignTicket(ticketId) {
-    const token = localStorage.getItem('token');
-
-        if (!token) {
-          alert("Vous devez être connecté pour accéder aux tickets.");
-          return;
-        }
-      const agentId = document.getElementById(`agentSelect-${ticketId}`).value;
-      try {
-          const response = await axios.put(`/tickets/assign/${ticketId}`, { agentId },{
-            headers: {
-                Authorization: `Bearer ${token}`}});
-          Toastify({
-              text: "Ticket assigné avec succès !",
-              duration: 3000, 
-              close: true, 
-              gravity: "top",
-              position: "right", 
-              backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", 
-              stopOnFocus: true 
-            }).showToast();
-          fetchData(); 
-      } catch (error) {
-          console.error("Erreur lors de l'attribution du ticket:", error);
-      }
-  }
-
-  // Appeler fetchData au chargement de la page
-  window.onload = fetchData;
-</script>
-
+        </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
@@ -564,11 +423,92 @@
   <script src="../../js/template.js"></script>
   <script src="../../js/settings.js"></script>
   <script src="../../js/todolist.js"></script>
+  <!-- toast script-->
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
   <!-- End custom js for this page-->
-  
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const notificationDropdown = document.getElementById("notificationDropdown");
+    const notificationList = document.getElementById("notificationList");
+    const notificationCount = document.getElementById("notificationCount");
+
+    async function fetchNotifications() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+            }
+
+            const response = await axios.get("/notif/unread", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const notifications = response.data;
+
+            if (notifications.length > 0) {
+                notificationCount.textContent = notifications.length;
+                notificationCount.style.display = "inline"; // Afficher le badge
+
+                notificationList.innerHTML = ""; // Vider la liste avant d'ajouter les nouvelles notifications
+
+                notifications.forEach(notification => {
+                    const notificationItem = document.createElement("a");
+                    notificationItem.classList.add("dropdown-item", "preview-item");
+                    notificationItem.innerHTML = `
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-warning">
+                                <i class="ti-info-alt mx-0"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">
+                                ${new Date(notification.createdAt).toLocaleString()}
+                            </p>
+                        </div>
+                    `;
+
+                    // Ajouter un écouteur de clic pour marquer cette notification comme lue
+                    notificationItem.addEventListener("click", async () => {
+                        try {
+                            const token = localStorage.getItem('token');
+                            if (!token) {
+                                alert("Vous devez être connecté pour accéder aux tickets.");
+                                return;
+                            }
+
+                            await axios.put("/notif/markAsRead", {}, {
+                                headers: { Authorization: `Bearer ${token}` }
+                            });
+
+                            fetchNotifications(); // Recharger après avoir marqué comme lue
+                        } catch (error) {
+                            console.error("Erreur lors de la mise à jour des notifications :", error);
+                        }
+                    });
+
+                    notificationList.appendChild(notificationItem);
+                });
+            } else {
+                notificationCount.style.display = "none"; // Masquer le badge s'il n'y a pas de notifications
+                notificationList.innerHTML = `<p class="text-muted small-text text-center">Aucune notification</p>`;
+            }
+        } catch (error) {
+            console.error("Erreur lors du chargement des notifications :", error);
+        }
+    }
+
+    // Charger les notifications au chargement de la page
+    fetchNotifications();
+
+    // Mettre à jour les notifications toutes les 30 secondes
+    setInterval(fetchNotifications, 30000);
+});
+
+
+    </script>
 </body>
 
 </html>

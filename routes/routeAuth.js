@@ -28,7 +28,7 @@ router.post('/login',async(req,res)=>{
             res.status(400).send({ message: "invalid credentiels"})
         }
         const token=await jwt.sign({userId:user._id},process.env.SECRET_KEY)
-        res.send({message:"user logged in successfully",token})
+        res.send({message:"user logged in successfully",token,role: user.role})
     } catch(error){
         res.status(400).send({message:error.message})
     }
@@ -37,5 +37,5 @@ router.post('/login',async(req,res)=>{
 router.post('/logout', (req, res) => {
     return res.status(200).json({ message: 'Déconnexion réussie' });
   });
-  
+
 module.exports = router
