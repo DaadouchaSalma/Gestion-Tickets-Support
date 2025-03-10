@@ -46,6 +46,8 @@ app.get('/adminTickets',(req,res)=>{
 
 app.get('/adminTicketsNonAtt',(req,res)=>{
     res.sendFile(__dirname+'/template/admin/adminTicketNonAtt.html')})
+app.get('/adminAddAgent',(req,res)=>{
+        res.sendFile(__dirname+'/template/admin/addAgent.html')})    
 
 app.get('/create',(req,res)=>{
     res.sendFile(__dirname+'/template/simpleUser/creation-ticket.html')})
