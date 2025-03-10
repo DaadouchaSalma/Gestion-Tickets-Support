@@ -24,8 +24,7 @@ app.listen(PORT, () => {
     console.log('Server running on http://localhost:4000');
 });
 app.get('/', (req, res) => {
-    res.send('Hello from server!');
-});
+    res.sendFile(__dirname+'/template/auth/login.html')})
 
 app.use(express.static('template'));
 
@@ -38,7 +37,7 @@ app.get('/login',(req,res)=>{
 app.get('/register',(req,res)=>{
         res.sendFile(__dirname+'/template/auth/register.html')})
 
-app.get('/agentList/:agentId',(req,res)=>{
+app.get('/agent/list',(req,res)=>{
     res.sendFile(__dirname+'/template/agent/ticketList.html')})
 
 app.get('/adminTickets',(req,res)=>{

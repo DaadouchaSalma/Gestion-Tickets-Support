@@ -12,6 +12,7 @@ router.get("/agents",async(req,res)=>{
         res.status(500).json({ error: "Erreur lors de la récupération des agents" });  
     }
 });
+
 //le nombre d'agents
 router.get("/nb-agents", async (req, res) => {
     try {
@@ -99,4 +100,7 @@ router.get("/tousAgents", authenticateUser, authorizeAdmin, async (req, res) => 
       res.status(500).json({ message: "Erreur lors de la récupération des agents." });
   }
 });
+
+
+
 module.exports = router;

@@ -2,7 +2,8 @@ const express = require("express");
 const Ticket = require("../models/ticket");
 const User = require("../models/user");
 const { envoyerNotification } = require("../services/notificationService")
-const { authenticateUser, authorizeAdmin,authorizeUser } = require("../middleware/authMiddleware");
+const { authenticateUser, authorizeAdmin, authorizeAgent, authorizeUser } = require("../middleware/authMiddleware");
+const { sendStatusUpdateEmail } = require("../services/emailService");
 const router = express.Router();
 
 // le nombre de tickets par état
@@ -87,33 +88,39 @@ router.put("/assign/:id",authenticateUser, authorizeAdmin, async (req, res) => {
 });
 
 //Liste des tickets d'un agent 
-router.get("/:agentId", async (req, res) => {
-    try {
-      const agentId = req.params.agentId;
-      const tickets = await Ticket.find({ agent: agentId }).populate('user', 'email').exec();
-      console.log(tickets);
+router.get("/liste", authenticateUser, authorizeAgent, async (req, res) => {
+  try {
+    const agentId = req.user._id;
+    console.log(agentId);
+    const tickets = await Ticket.find({ agent: agentId }).populate('user', 'email').exec();
+    console.log(tickets);
 
-      if (tickets.length === 0) {
-        return res.status(404).json({ message: "No tickets found for this agent." });
-      }
-      res.json(tickets);
-
-    } catch (error) {
-      res.json({ message: error.message });
+    if (tickets.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this agent." });
     }
-  });
+    res.json(tickets);
+
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+});
 
 //Update status tickets
-router.put("/:ticketId", async (req, res) => {
+router.put("/:ticketId",  authenticateUser, authorizeAgent, async (req, res) => {
   try {
-    const ticket = await Ticket.findByIdAndUpdate(req.params.ticketId, { status: req.body.status }, { new: true });
+    const ticket = await Ticket.findByIdAndUpdate(req.params.ticketId, { status: req.body.status }, { new: true }).populate('user');;
     console.log(ticket);
     res.json(ticket);
+    console.log('Ticket:', ticket);
+    console.log('Ticket User:', ticket.user);
+    console.log('User Email:', ticket.user?.email);
+
+    sendStatusUpdateEmail(ticket.user.email, ticket.title, req.body.status);
 
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-  });
+});
 
 
 //Create ticket
@@ -125,7 +132,10 @@ router.post("/add", authenticateUser, authorizeUser, async (req, res) => {
       console.log("les admins",admins);
         if (admins.length > 0) {
             for (let admin of admins) {
+
                 await envoyerNotification(admin._id, ticket._id, `📌 Un nouveau ticket a été créé : <strong>${ticket.title}</strong> dans la catégorie <strong>${ticket.category}</strong>.<br/> Veuillez l examiner et l affecter à un agent.`);
+
+               
             }
         }
       res.status(201).json(ticket);
@@ -135,13 +145,14 @@ router.post("/add", authenticateUser, authorizeUser, async (req, res) => {
 });
 
 //List ticket user
-router.get('/', async (req, res) => {
-    try {
-      const tickets = await Ticket.find({});
-      res.status(200).json(tickets);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
+router.get('/', authenticateUser, authorizeUser, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const tickets = await Ticket.find({user: userId});
+    res.status(200).json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 // le nombre de tickets par état
 router.get("/status", async (req, res) => {
@@ -165,4 +176,7 @@ router.get("/status", async (req, res) => {
       res.status(500).json({ error: error.message });
   }
 });
+
+
+
 module.exports = router;
