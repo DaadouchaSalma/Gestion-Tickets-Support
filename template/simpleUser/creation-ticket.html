@@ -22,6 +22,9 @@
   <!-- toast -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/@coreui/icons/css/free.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -29,101 +32,22 @@
     <!-- partial:../../partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo mr-5" href="../../index.html"><img src="../../images/logo.svg" class="mr-2" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a>
+          <!--a class="navbar-brand brand-logo mr-5" href="../../index.html"><img src="../../images/logo.svg" class="mr-2" alt="logo"/></a>
+          <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a-->
+          <a class="navbar-brand brand-logo mr-5" href="/listTicketUser"><img src="../images/ticketyx.png" class="mr-12" alt="logo" style="height: 30%; width: 80%;"/></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-            <span class="icon-menu"></span>
-          </button>
-          <ul class="navbar-nav mr-lg-2">
-            <li class="nav-item nav-search d-none d-lg-block">
-              <div class="input-group">
-                <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                  <span class="input-group-text" id="search">
-                    <i class="icon-search"></i>
-                  </span>
-                </div>
-                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-              </div>
-            </li>
-          </ul>
-          <ul class="navbar-nav mr-lg-2">
-            <li class="nav-item">
-              <a class="nav-link" href="../../index.html">Accueil</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../../liste-ticket-user.html">Liste</a>
-            </li>
-          </ul>
           <ul class="navbar-nav navbar-nav-right">
-            <li class="nav-item dropdown">
-              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                <i class="icon-bell mx-0"></i>
-                <span class="count"></span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-success">
-                      <i class="ti-info-alt mx-0"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                    <p class="font-weight-light small-text mb-0 text-muted">
-                      Just now
-                    </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-warning">
-                      <i class="ti-settings mx-0"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject font-weight-normal">Settings</h6>
-                    <p class="font-weight-light small-text mb-0 text-muted">
-                      Private message
-                    </p>
-                  </div>
-                </a>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-info">
-                      <i class="ti-user mx-0"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                    <p class="font-weight-light small-text mb-0 text-muted">
-                      2 days ago
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </li>
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                <img src="../../images/faces/face28.jpg" alt="profile"/>
+                <i class="ti-user mx-0" style="font-size: large; font-weight: bolder; line-height: 1;"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                <a class="dropdown-item">
-                  <i class="ti-settings text-primary"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item">
+                <a class="dropdown-item" onclick="logout()">
                   <i class="ti-power-off text-primary"></i>
                   Logout
                 </a>
               </div>
-            </li>
-            <li class="nav-item nav-settings d-none d-lg-flex">
-              <a class="nav-link" href="#">
-                <i class="icon-ellipsis"></i>
-              </a>
             </li>
           </ul>
           <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -133,16 +57,14 @@
       </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:../../partials/_settings-panel.html -->
-      
+     
       <!-- partial -->
-      <!-- partial:../../partials/_sidebar.html -->
-      <!--nav class="sidebar sidebar-offcanvas" id="sidebar">
-        
-      </nav-->
-      <!-- partial -->
-      <div class="main-panel" style="width: 100%;">        
+      <div class="main-panel" style="width: 100%;">  
+         
         <div class="content-wrapper" >
+          <div class="col-12 ">
+            <a class="btn btn-primary" href="/listTicketUser"><i class="mdi mdi-format-list-bulleted-type mr-2 "></i>Retourner à la liste des tickets</a>
+          </div>    
           <!--div class="row"-->
             <div class="col-md-6 grid-margin stretch-card" style="margin-left: 25%;">
               <div class="card">
@@ -169,19 +91,10 @@
                           <option value="Autres">Autres</option>
                         </select>
                       </div>
-                    <!--div class="form-group">
-                        <label>Pièce jointe</label>
-                        <input type="file" name="img[]" class="file-upload-default">
-                        <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Télécharger une image">
-                          <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Télécharger</button>
-                          </span>
-                        </div>
-                    </div-->
                     <button type="submit" class="btn btn-primary mr-2">Créer</button>
-                    <button class="btn btn-light">Annuler</button>
+                    <button class="btn btn-light" type="reset" onclick="document.getElementById('ticketForm').reset()">Annuler</button>
                   </form>
+
                 </div>
               </div>
             </div>
@@ -230,7 +143,13 @@
   <script>
     document.getElementById("ticketForm").addEventListener("submit", async function(event) {
       event.preventDefault(); // Prevent page reload
-  
+      const token = localStorage.getItem('token');
+  console.log("token apres get",token)
+          if (!token) {
+              alert("Vous devez être connecté pour accéder aux tickets.");
+                return;
+          }
+
       // Get form values
       const title = document.getElementById("titre").value;
       const description = document.getElementById("description").value;
@@ -242,7 +161,11 @@
           title,
           description,
           category
-        });
+        },{
+    headers: {
+        Authorization: `Bearer ${token}`  // Token passé dans l'en-tête
+    }
+});
         // Show success toast
         Toastify({
               text: "Ticket créé avec succès !",
@@ -271,6 +194,32 @@
       }).showToast();
       }
     });
+  </script>
+  <script>
+    // Fonction pour gérer la déconnexion
+    function logout() {
+      // Supprime le token du localStorage
+      localStorage.removeItem('token');
+      
+      // Envoyer une requête au serveur pour la déconnexion (utile si vous voulez loguer l'action côté serveur)
+      fetch('http://localhost:4000/auth/logout', {
+        method: 'POST',
+        credentials: 'include'  // Permet d'envoyer des cookies avec la requête si nécessaire
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);  // Affiche "Déconnexion réussie"
+        //document.getElementById('message').textContent = data.message;
+        
+        // Optionnel : Rediriger vers la page de connexion après la déconnexion
+        setTimeout(() => {
+          window.location.href = '/login';  // Remplacez par l'URL de votre page de connexion
+        }, 100);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la déconnexion:', error);
+      });
+    }
   </script>
 </body>
 

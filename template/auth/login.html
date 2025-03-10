@@ -95,7 +95,20 @@
             localStorage.setItem("token", response.data.token);
     
             alert("Connexion réussie !");
-            window.location.replace("/index");
+
+            // Vérifier le rôle de l'utilisateur
+            const userRole = response.data.role; // Assurez-vous que l'API renvoie bien un champ 'role'
+           
+            if (userRole === "simpleUser") {
+                window.location.replace("/listTicketUser");
+            } else if (userRole === "admin") {
+                window.location.replace("/index");
+            } else if (userRole==="agent"){
+              window.location.replace("/agent/list");
+            }
+            else {
+                alert("Rôle inconnu !");
+            }
     
         } catch (error) {
             alert("Erreur : " + error);  

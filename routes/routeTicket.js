@@ -82,7 +82,7 @@ router.post("/add", authenticateUser, authorizeUser, async (req, res) => {
       console.log("les admins",admins);
         if (admins.length > 0) {
             for (let admin of admins) {
-                await envoyerNotification(admin._id, ticket._id, "📌 Un nouveau ticket a été créé et doit être attribué à un agent.");
+                await envoyerNotification(admin._id, ticket._id, `📌 Un nouveau ticket a été créé : <strong>${ticket.title}</strong> dans la catégorie <strong>${ticket.category}</strong>. Veuillez l examiner et l affecter à un agent.`);
             }
         }
       res.status(201).json(ticket);
@@ -92,13 +92,15 @@ router.post("/add", authenticateUser, authorizeUser, async (req, res) => {
 });
 
 //List ticket user
-router.get('/', async (req, res) => {
-    try {
-      const tickets = await Ticket.find({});
-      res.status(200).json(tickets);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
+router.get('/', authenticateUser, authorizeUser, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const tickets = await Ticket.find({user: userId});
+    res.status(200).json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 module.exports = router;

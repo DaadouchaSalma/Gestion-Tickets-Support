@@ -24,8 +24,7 @@ app.listen(PORT, () => {
     console.log('Server running on http://localhost:4000');
 });
 app.get('/', (req, res) => {
-    res.send('Hello from server!');
-});
+    res.sendFile(__dirname+'/template/auth/login.html')})
 
 app.use(express.static('template'));
 
